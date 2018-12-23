@@ -119,6 +119,29 @@ const MutationType = new GraphQLObjectType({
             console.log(err);
           });
       }
+    },
+    deletePost: {
+      type: postType,
+      args: {
+        id: { type: GraphQLString }
+      },
+      resolve: async (source, { id }) => {
+        const params: DynamoDB.DocumentClient.DeleteItemInput = {
+          TableName: process.env.DYNAMODB_TABLE,
+          Key: { id }
+        };
+        return await dynamoDb
+          .delete(params)
+          .promise()
+          .then(data => {
+            return {
+              id
+            };
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   }
 });
