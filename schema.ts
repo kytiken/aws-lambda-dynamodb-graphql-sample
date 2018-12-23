@@ -2,7 +2,8 @@ import {
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLString,
-  GraphQLSchemaConfig
+  GraphQLSchemaConfig,
+  GraphQLList
 } from "graphql";
 import { DynamoDB } from "aws-sdk";
 import { v4 as uuid } from "uuid";
@@ -17,6 +18,8 @@ const postType = new GraphQLObjectType({
   }
 });
 
+const postListType = new GraphQLList(postType);
+
 const QueryType = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
@@ -28,6 +31,21 @@ const QueryType = new GraphQLObjectType({
           title: "hoge",
           contents: "fuga"
         };
+      }
+    },
+    posts: {
+      type: postListType,
+      resolve: async () => {
+        const scanParams: DynamoDB.DocumentClient.ScanInput = {
+          TableName: process.env.DYNAMODB_TABLE
+        };
+
+        return await dynamoDb
+          .scan(scanParams)
+          .promise()
+          .then(data => {
+            return data.Items;
+          });
       }
     }
   }
