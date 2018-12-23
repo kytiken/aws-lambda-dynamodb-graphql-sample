@@ -25,12 +25,20 @@ const QueryType = new GraphQLObjectType({
   fields: {
     post: {
       type: postType,
-      resolve: () => {
-        return {
-          id: "hgeowjfoiwej",
-          title: "hoge",
-          contents: "fuga"
+      args: {
+        id: { type: GraphQLString }
+      },
+      resolve: async (_, { id }) => {
+        const params: DynamoDB.DocumentClient.GetItemInput = {
+          TableName: process.env.DYNAMODB_TABLE,
+          Key: { id }
         };
+        return await dynamoDb
+          .get(params)
+          .promise()
+          .then(data => {
+            return data.Item;
+          });
       }
     },
     posts: {
