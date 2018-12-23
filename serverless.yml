@@ -24,12 +24,15 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
 functions:
-  graphql:
-    handler: handler.graphql_handler
+  graphql_get:
+    handler: handler.graphql_get_method_handler
     events:
       - http:
           method: get
           path: graphql
+  graphql_post:
+    handler: handler.graphql_post_method_handler
+    events:
       - http:
           method: post
           path: graphql

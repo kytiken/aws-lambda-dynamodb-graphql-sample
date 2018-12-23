@@ -2,11 +2,8 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { graphql } from "graphql";
 import schema from "./schema";
 
-export const graphql_handler: APIGatewayProxyHandler = async (
-  event,
-  context
-) => {
-  return await graphql(schema, event.queryStringParameters.query)
+const execute_graphql = async query => {
+  return await graphql(schema, query)
     .then(data => {
       return {
         statusCode: 200,
@@ -23,4 +20,19 @@ export const graphql_handler: APIGatewayProxyHandler = async (
         })
       };
     });
+};
+
+export const graphql_get_method_handler: APIGatewayProxyHandler = async (
+  event,
+  context
+) => {
+  return await execute_graphql(event.queryStringParameters.query);
+};
+
+export const graphql_post_method_handler: APIGatewayProxyHandler = async (
+  event,
+  context
+) => {
+  const query = JSON.parse(event.body).query;
+  return await execute_graphql(query);
 };
