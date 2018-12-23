@@ -89,6 +89,36 @@ const MutationType = new GraphQLObjectType({
             console.log(err);
           });
       }
+    },
+    updatePost: {
+      type: postType,
+      args: {
+        id: { type: GraphQLString },
+        title: { type: GraphQLString },
+        contents: { type: GraphQLString }
+      },
+      resolve: async (source, { id, title, contents }) => {
+        const params: DynamoDB.DocumentClient.UpdateItemInput = {
+          TableName: process.env.DYNAMODB_TABLE,
+          Key: { id },
+          UpdateExpression: "set title = :title, contents = :contents",
+          ExpressionAttributeValues: {
+            ":title": title,
+            ":contents": contents
+          }
+        };
+        return await dynamoDb
+          .update(params)
+          .promise()
+          .then(data => {
+            return {
+              id
+            };
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   }
 });
