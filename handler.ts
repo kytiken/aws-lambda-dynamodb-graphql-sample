@@ -7,9 +7,7 @@ const execute_graphql = async query => {
     .then(data => {
       return {
         statusCode: 200,
-        body: JSON.stringify({
-          data
-        })
+        body: JSON.stringify(data)
       };
     })
     .catch(err => {
