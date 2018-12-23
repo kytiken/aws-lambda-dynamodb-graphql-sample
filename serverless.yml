@@ -24,7 +24,7 @@ provider:
 
 functions:
   graphql:
-    handler: handler.graphql
+    handler: handler.graphql_handler
     events:
       - http:
           method: get
