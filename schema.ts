@@ -74,8 +74,7 @@ const MutationType = new GraphQLObjectType({
         return await dynamoDb
           .put(putParams)
           .promise()
-          .then(data => {
-            console.log(itemParams);
+          .then(() => {
             return itemParams;
           })
           .catch(err => {
