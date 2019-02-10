@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { graphql } from "graphql";
-import schema from "./graphql/schema";
+import schema from "./src/graphql/schema";
 
 const execute_graphql = async query => {
   return await graphql(schema, query)
