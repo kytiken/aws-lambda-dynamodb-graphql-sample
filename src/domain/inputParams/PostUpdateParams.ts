@@ -1,6 +1,6 @@
-import UpdateParams from "../../base/inputParams/UpdateParams";
+import DynamoDBUpdateParams from "../../base/dynamodb/inputParams/DynamoDBUpdateParams";
 
-export default class PostUpdateParams extends UpdateParams {
+export default class PostUpdateParams extends DynamoDBUpdateParams {
   title: string;
   contents: string;
 
@@ -12,6 +12,6 @@ export default class PostUpdateParams extends UpdateParams {
   }
 
   setUpdateAttributeList() {
-    this.updateAttributeList = ["id", "title", "contents"];
+    this.updateAttributeList = ["title", "contents"];
   }
 }

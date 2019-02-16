@@ -1,3 +1,3 @@
-export default class DeleteParams {
+export default abstract class DeleteParams {
   id: string;
 }

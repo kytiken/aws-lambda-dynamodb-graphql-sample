@@ -1,4 +1,4 @@
-import Provider from "./Provider";
+import Provider from "./ProviderInterface";
 import CreateParams from "./inputParams/CreateParams";
 import UpdateParams from "./inputParams/UpdateParams";
 import DeleteParams from "./inputParams/DeleteParams";

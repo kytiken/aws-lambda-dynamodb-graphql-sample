@@ -7,7 +7,7 @@ import {
 import postType from "./types/PostType";
 import postListType from "./types/PostListType";
 import PostRepository from "../domain/repositories/PostRepository";
-import DynamoDBProvider from "../base/DynamoDBProvider";
+import DynamoDBProvider from "../base/dynamodb/DynamoDBProvider";
 import PostCreateParams from "../domain/inputParams/PostCreateParams";
 import PostUpdateParams from "../domain/inputParams/PostUpdateParams";
 import PostDeleteParams from "../domain/inputParams/PostDeleteParams";

@@ -1,6 +1,6 @@
-import DeleteParams from "../../base/inputParams/DeleteParams";
+import DynamoDBDeleteParams from "../../base/dynamodb/inputParams/DynamoDBDeleteParams";
 
-export default class PostDeleteParams extends DeleteParams {
+export default class PostDeleteParams extends DynamoDBDeleteParams {
   id: string;
 
   constructor(id) {

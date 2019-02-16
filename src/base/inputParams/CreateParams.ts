@@ -1,10 +1,3 @@
-import { v4 as uuid } from "uuid";
-
-export default class CreateParams extends Object {
+export default abstract class CreateParams {
   id: String;
-
-  setNewId() {
-    const newId = uuid();
-    this.id = newId;
-  }
 }

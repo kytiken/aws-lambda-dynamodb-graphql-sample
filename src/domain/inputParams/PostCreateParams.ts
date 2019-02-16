@@ -1,6 +1,6 @@
-import CreateParams from "../../base/inputParams/CreateParams";
+import DynamoDBCreateParams from "../../base/dynamodb/inputParams/DynamoDBCreateParams";
 
-export default class PostCreateParams extends CreateParams {
+export default class PostCreateParams extends DynamoDBCreateParams {
   title: String;
   contents: String;
 

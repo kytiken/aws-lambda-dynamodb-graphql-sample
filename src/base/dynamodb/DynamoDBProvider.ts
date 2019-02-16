@@ -1,15 +1,14 @@
 import { DynamoDB } from "aws-sdk";
-import Provider from "./Provider";
-import CreateParams from "./inputParams/CreateParams";
-import UpdateParams from "./inputParams/UpdateParams";
-import DeleteParams from "./inputParams/DeleteParams";
+import ProviderInterface from "../ProviderInterface";
+import DynamoDbCreateParams from "./inputParams/DynamoDbCreateParams";
+import DynamoDbUpdateParams from "./inputParams/DynamoDbUpdateParams";
+import DynamoDbDeleteParams from "./inputParams/DynamoDbDeleteParams";
 
-export default class DynamoDBProvider extends Provider {
+export default class DynamoDBProvider implements ProviderInterface {
   dynamoDb: DynamoDB.DocumentClient;
   tableName: string;
 
   constructor(tableName: string) {
-    super();
     this.dynamoDb = new DynamoDB.DocumentClient();
     this.tableName = tableName;
   }
@@ -29,7 +28,7 @@ export default class DynamoDBProvider extends Provider {
     return this.dynamoDb.scan(params).promise();
   }
 
-  create(createParams: CreateParams): Promise<any> {
+  create(createParams: DynamoDbCreateParams): Promise<any> {
     createParams.setNewId();
     const params: DynamoDB.DocumentClient.PutItemInput = {
       TableName: this.tableName,
@@ -38,27 +37,18 @@ export default class DynamoDBProvider extends Provider {
     return this.dynamoDb.put(params).promise();
   }
 
-  update(updateParams: UpdateParams): Promise<any> {
-    const attributesExpression = updateParams.updateAttributeList
-      .map(attrName => {
-        return ` ${attrName} = :${attrName}`;
-      })
-      .join(",");
-    const updateExpression = `set ${attributesExpression}`;
-    let expressionAttributeValues = {};
-    updateParams.updateAttributeList.forEach(attrName => {
-      expressionAttributeValues[`:${attrName}`] = updateParams[attrName];
-    });
+  update(updateParams: DynamoDbUpdateParams): Promise<any> {
+    console.log(updateParams);
     const params: DynamoDB.DocumentClient.UpdateItemInput = {
       TableName: this.tableName,
       Key: { id: updateParams.id },
-      UpdateExpression: updateExpression,
-      ExpressionAttributeValues: expressionAttributeValues
+      UpdateExpression: updateParams.expression(),
+      ExpressionAttributeValues: updateParams.expressionAttributeValues()
     };
     return this.dynamoDb.update(params).promise();
   }
 
-  delete(deleteParams: DeleteParams): Promise<any> {
+  delete(deleteParams: DynamoDbDeleteParams): Promise<any> {
     const params: DynamoDB.DocumentClient.DeleteItemInput = {
       TableName: this.tableName,
       Key: { id: deleteParams.id }
