@@ -6,19 +6,19 @@ import PostDeleteParams from "../inputParams/PostDeleteParams";
 
 export default class PostRepository extends BaseRepository {
   findBy(id: string): Promise<PostEntity> {
-    return super.findBy(id).then(data => {
+    return super.findBy(id).then(item => {
       const post: PostEntity = {
-        id: data.Item.id,
-        title: data.Item.title,
-        contents: data.Item.contents
+        id: item.id,
+        title: item.title,
+        contents: item.contents
       };
       return post;
     });
   }
 
   all(): Promise<Array<PostEntity>> {
-    return super.all().then(data => {
-      return data.Items.map(item => {
+    return super.all().then(items => {
+      return items.map(item => {
         const post: PostEntity = {
           id: item.id,
           title: item.title,
@@ -30,7 +30,7 @@ export default class PostRepository extends BaseRepository {
   }
 
   create(postCreateParams: PostCreateParams): Promise<PostEntity> {
-    return super.create(postCreateParams).then(data => {
+    return super.create(postCreateParams).then(() => {
       const post: PostEntity = {
         id: postCreateParams.id,
         title: postCreateParams.title,
@@ -41,7 +41,7 @@ export default class PostRepository extends BaseRepository {
   }
 
   update(postUpdateParams: PostUpdateParams): Promise<PostEntity> {
-    return super.update(postUpdateParams).then(data => {
+    return super.update(postUpdateParams).then(() => {
       const post: PostEntity = {
         id: postUpdateParams.id,
         title: postUpdateParams.title,

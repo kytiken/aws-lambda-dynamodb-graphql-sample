@@ -18,14 +18,24 @@ export default class DynamoDBProvider implements ProviderInterface {
       TableName: this.tableName,
       Key: { id }
     };
-    return this.dynamoDb.get(params).promise();
+    return this.dynamoDb
+      .get(params)
+      .promise()
+      .then(data => {
+        return data.Item;
+      });
   }
 
   all(): Promise<any> {
     const params: DynamoDB.DocumentClient.ScanInput = {
       TableName: this.tableName
     };
-    return this.dynamoDb.scan(params).promise();
+    return this.dynamoDb
+      .scan(params)
+      .promise()
+      .then(data => {
+        return data.Items;
+      });
   }
 
   create(createParams: DynamoDbCreateParams): Promise<any> {
@@ -38,7 +48,6 @@ export default class DynamoDBProvider implements ProviderInterface {
   }
 
   update(updateParams: DynamoDbUpdateParams): Promise<any> {
-    console.log(updateParams);
     const params: DynamoDB.DocumentClient.UpdateItemInput = {
       TableName: this.tableName,
       Key: { id: updateParams.id },
