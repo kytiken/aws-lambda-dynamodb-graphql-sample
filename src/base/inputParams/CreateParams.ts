@@ -1,3 +1,3 @@
-export default abstract class CreateParams {
+export default interface CreateParams {
   id: String;
 }

@@ -1,4 +1,4 @@
-export default abstract class UpdateParams {
+export default interface UpdateParams {
   id: string;
   updateAttributeList: Array<string>;
 }

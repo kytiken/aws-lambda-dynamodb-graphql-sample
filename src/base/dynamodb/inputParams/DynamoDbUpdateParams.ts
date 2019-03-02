@@ -1,8 +1,10 @@
 import UpdateParams from "../../inputParams/UpdateParams";
 
-export default class DynamoDbUpdateParams extends UpdateParams {
+export default class DynamoDbUpdateParams implements UpdateParams {
+  id: string;
+  updateAttributeList: Array<string>;
+
   constructor() {
-    super();
     this.setUpdateAttributeList();
   }
 
