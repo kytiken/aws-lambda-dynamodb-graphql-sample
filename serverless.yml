@@ -30,12 +30,14 @@ functions:
       - http:
           method: get
           path: graphql
+          cors: true
   graphql_post:
     handler: handler.graphql_post_method_handler
     events:
       - http:
           method: post
           path: graphql
+          cors: true
 
 resources:
   Resources:

@@ -1,12 +1,26 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { graphql } from "graphql";
-import schema from "./schema";
+import schema from "./src/graphql/schema";
 
-const execute_graphql = async query => {
-  return await graphql(schema, query)
+const rootValue = "";
+const contextValue = "";
+const operationName = "";
+
+const execute_graphql = async (query, variableValues) => {
+  return await graphql(
+    schema,
+    query,
+    rootValue,
+    contextValue,
+    variableValues,
+    operationName
+  )
     .then(data => {
       return {
         statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        },
         body: JSON.stringify(data)
       };
     })
@@ -24,13 +38,17 @@ export const graphql_get_method_handler: APIGatewayProxyHandler = async (
   event,
   context
 ) => {
-  return await execute_graphql(event.queryStringParameters.query);
+  const query = event.queryStringParameters.query;
+  const variableValues = event.queryStringParameters.variables;
+  return await execute_graphql(query, variableValues);
 };
 
 export const graphql_post_method_handler: APIGatewayProxyHandler = async (
   event,
   context
 ) => {
-  const query = JSON.parse(event.body).query;
-  return await execute_graphql(query);
+  const body = JSON.parse(event.body);
+  const query = body.query;
+  const variableValues = body.variables;
+  return await execute_graphql(query, variableValues);
 };
